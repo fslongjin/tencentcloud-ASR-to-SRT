@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>腾讯云语音识别转SRT字幕工具 - 免费10小时额度</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f8f9fa;
+            min-height: 100vh;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: white;
+            padding: 16px 0;
+            border-bottom: 1px solid #e5e5e5;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            background: #1a73e8;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            margin-right: 16px;
+        }
+
+        .nav-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+            min-height: calc(100vh - 100px);
+        }
+
+        .content-left {
+            padding: 40px 0;
+        }
+
+        .main-title {
+            font-size: 48px;
+            font-weight: 700;
+            color: #333;
+            line-height: 1.2;
+            margin-bottom: 24px;
+        }
+
+                 .subtitle {
+             font-size: 20px;
+             color: #666;
+             margin-bottom: 24px;
+             line-height: 1.5;
+         }
+
+         .highlight-box {
+             background: linear-gradient(135deg, #ff6b6b 0%, #ffa500 100%);
+             border-radius: 12px;
+             padding: 20px;
+             margin-bottom: 32px;
+             display: flex;
+             align-items: center;
+             gap: 16px;
+             box-shadow: 0 4px 20px rgba(255, 107, 107, 0.2);
+         }
+
+         .highlight-icon {
+             font-size: 32px;
+             flex-shrink: 0;
+         }
+
+         .highlight-content {
+             flex: 1;
+         }
+
+         .highlight-title {
+             font-size: 18px;
+             font-weight: 700;
+             color: white;
+             margin-bottom: 4px;
+         }
+
+         .highlight-desc {
+             font-size: 14px;
+             color: rgba(255, 255, 255, 0.9);
+             line-height: 1.4;
+         }
+
+        .features {
+            margin-bottom: 40px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+            font-size: 16px;
+            color: #555;
+        }
+
+        .feature-icon {
+            color: #1a73e8;
+            margin-right: 12px;
+            font-size: 18px;
+        }
+
+                 .button-group {
+             display: flex;
+             gap: 16px;
+             margin-bottom: 32px;
+         }
+
+         .guide-section {
+             background: rgba(26, 115, 232, 0.05);
+             border: 1px solid rgba(26, 115, 232, 0.1);
+             border-radius: 12px;
+             padding: 24px;
+             margin-top: 24px;
+         }
+
+         .guide-title {
+             font-size: 18px;
+             font-weight: 600;
+             color: #333;
+             margin-bottom: 20px;
+             display: flex;
+             align-items: center;
+             gap: 8px;
+         }
+
+         .guide-steps {
+             display: flex;
+             flex-direction: column;
+             gap: 16px;
+         }
+
+         .step-item {
+             display: flex;
+             align-items: flex-start;
+             gap: 16px;
+         }
+
+         .step-number {
+             background: #1a73e8;
+             color: white;
+             width: 28px;
+             height: 28px;
+             border-radius: 50%;
+             display: flex;
+             align-items: center;
+             justify-content: center;
+             font-size: 14px;
+             font-weight: 600;
+             flex-shrink: 0;
+             margin-top: 2px;
+         }
+
+         .step-content {
+             flex: 1;
+         }
+
+         .step-text {
+             font-size: 15px;
+             color: #333;
+             font-weight: 500;
+             margin-bottom: 4px;
+             line-height: 1.4;
+         }
+
+         .step-hint {
+             font-size: 13px;
+             color: #666;
+             line-height: 1.3;
+         }
+
+         .link {
+             color: #1a73e8;
+             text-decoration: none;
+             font-weight: 600;
+             border-bottom: 1px solid transparent;
+             transition: all 0.2s ease;
+         }
+
+         .link:hover {
+             border-bottom-color: #1a73e8;
+             background: rgba(26, 115, 232, 0.05);
+             padding: 2px 4px;
+             margin: -2px -4px;
+             border-radius: 4px;
+         }
+
+        .btn-primary {
+            background: #1a73e8;
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary:hover {
+            background: #1557b0;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #333;
+            border: 2px solid #e5e5e5;
+            padding: 14px 32px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-secondary:hover {
+            border-color: #1a73e8;
+            color: #1a73e8;
+        }
+
+        .content-right {
+            position: relative;
+        }
+
+        .demo-area {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            border: 1px solid #e5e5e5;
+        }
+
+        .upload-area {
+            border: 2px dashed #e5e5e5;
+            border-radius: 12px;
+            padding: 32px;
+            text-align: center;
+            margin-bottom: 24px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            background: #fafafa;
+        }
+
+        .upload-area:hover {
+            border-color: #1a73e8;
+            background: rgba(26, 115, 232, 0.02);
+        }
+
+        .upload-area.dragover {
+            border-color: #1a73e8;
+            background: rgba(26, 115, 232, 0.05);
+        }
+
+        .upload-icon {
+            font-size: 32px;
+            color: #666;
+            margin-bottom: 12px;
+        }
+
+        .upload-text {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .upload-hint {
+            font-size: 14px;
+            color: #999;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .file-info {
+            background: #f0f9ff;
+            border: 1px solid #b3d9ff;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            display: none;
+        }
+
+        .file-info h4 {
+            color: #0d47a1;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .file-info p {
+            color: #1976d2;
+            margin: 4px 0;
+            font-size: 14px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e5e5e5;
+            border-radius: 3px;
+            margin: 16px 0;
+            overflow: hidden;
+            display: none;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #1a73e8;
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 3px;
+        }
+
+        .result-area {
+            margin-top: 24px;
+            display: none;
+        }
+
+        .result-header {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 12px;
+        }
+
+        .result-content {
+            background: #f8f9fa;
+            padding: 16px;
+            border-radius: 8px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            border: 1px solid #e5e5e5;
+            margin-bottom: 16px;
+        }
+
+        .demo-badge {
+            position: absolute;
+            top: -12px;
+            right: 24px;
+            background: #1a73e8;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+                 .footer {
+             background: #f8f9fa;
+             border-top: 1px solid #e5e5e5;
+             margin-top: 80px;
+             padding: 40px 0 20px;
+         }
+
+         .footer-container {
+             max-width: 1200px;
+             margin: 0 auto;
+             padding: 0 24px;
+         }
+
+         .footer-content {
+             display: grid;
+             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+             gap: 40px;
+             margin-bottom: 30px;
+         }
+
+         .footer-section {
+             text-align: center;
+         }
+
+         .footer-title {
+             font-size: 16px;
+             font-weight: 600;
+             color: #333;
+             margin-bottom: 12px;
+         }
+
+         .footer-link {
+             color: #1a73e8;
+             text-decoration: none;
+             font-size: 14px;
+             transition: all 0.2s ease;
+             display: inline-block;
+         }
+
+         .footer-link:hover {
+             color: #1557b0;
+             transform: translateY(-1px);
+         }
+
+         .footer-text {
+             color: #666;
+             font-size: 14px;
+         }
+
+         .footer-divider {
+             height: 1px;
+             background: #e5e5e5;
+             margin: 20px 0;
+         }
+
+         .footer-bottom {
+             text-align: center;
+         }
+
+         .footer-copy {
+             color: #999;
+             font-size: 13px;
+             margin: 0;
+         }
+
+         @media (max-width: 768px) {
+             .container {
+                 grid-template-columns: 1fr;
+                 gap: 40px;
+                 padding: 0 20px;
+             }
+
+             .main-title {
+                 font-size: 36px;
+             }
+
+             .highlight-box {
+                 padding: 16px;
+                 margin-bottom: 24px;
+                 gap: 12px;
+             }
+
+             .highlight-icon {
+                 font-size: 24px;
+             }
+
+             .highlight-title {
+                 font-size: 16px;
+             }
+
+             .highlight-desc {
+                 font-size: 13px;
+             }
+
+             .button-group {
+                 flex-direction: column;
+             }
+
+             .btn-primary,
+             .btn-secondary {
+                 justify-content: center;
+             }
+
+             .guide-section {
+                 padding: 20px;
+                 margin-top: 20px;
+             }
+
+             .step-item {
+                 gap: 12px;
+             }
+
+             .step-number {
+                 width: 24px;
+                 height: 24px;
+                 font-size: 12px;
+             }
+
+             .step-text {
+                 font-size: 14px;
+             }
+
+             .step-hint {
+                 font-size: 12px;
+             }
+
+             .footer {
+                 margin-top: 40px;
+                 padding: 30px 0 15px;
+             }
+
+             .footer-content {
+                 gap: 20px;
+                 margin-bottom: 20px;
+             }
+
+             .footer-container {
+                 padding: 0 20px;
+             }
+         }
+    </style>
+ </head>
+ <body>
+     <nav class="navbar">
+         <div class="nav-container">
+             <div class="logo">T</div>
+             <div class="nav-title">腾讯云语音识别转SRT</div>
+         </div>
+     </nav>
+
+     <div class="container">
+         <div class="content-left">
+             <h1 class="main-title">腾讯云语音识别<br>转SRT字幕工具</h1>
+             <p class="subtitle">利用腾讯云强大的语音识别技术，将音频快速转换为标准SRT字幕格式。</p>
+             
+             <div class="highlight-box">
+                 <div class="highlight-icon">🎁</div>
+                 <div class="highlight-content">
+                     <div class="highlight-title">每月免费10小时</div>
+                     <div class="highlight-desc">腾讯云提供免费语音识别额度，直接白嫖！</div>
+                 </div>
+             </div>
+             
+             <div class="features">
+                 <div class="feature-item">
+                     <span class="feature-icon">🎬</span>
+                     支持从剪辑软件导出音频进行识别，然后重新导入到剪辑软件里面。
+                 </div>
+                 <div class="feature-item">
+                     <span class="feature-icon">⚡</span>
+                     一键转换SRT格式，兼容所有播放器
+                 </div>
+             </div>
+
+             <div class="button-group">
+                 <a href="https://console.cloud.tencent.com/asr/demonstrate" target="_blank" class="btn-primary">
+                     <span>🎤</span>
+                     腾讯云语音识别
+                 </a>
+                 <button class="btn-secondary" id="startBtn">
+                     <span>🚀</span>
+                     开始转换
+                 </button>
+                 <button class="btn-secondary" id="demoBtn">
+                     <span>👀</span>
+                     查看示例
+                 </button>
+             </div>
+
+             <div class="guide-section">
+                 <h3 class="guide-title">📋 完整使用流程</h3>
+                 <div class="guide-steps">
+                     <div class="step-item">
+                         <span class="step-number">1</span>
+                         <div class="step-content">
+                             <div class="step-text">在剪辑软件中导出音频文件（支持MP3、WAV等格式）</div>
+                             <div class="step-hint">从Premiere、Final Cut、剪映等软件导出音频</div>
+                         </div>
+                     </div>
+                     <div class="step-item">
+                         <span class="step-number">2</span>
+                         <div class="step-content">
+                             <div class="step-text">点击上方"腾讯云语音识别"按钮，进入控制台</div>
+                             <div class="step-hint">免费体验，每月10小时额度</div>
+                         </div>
+                     </div>
+                     <div class="step-item">
+                         <span class="step-number">3</span>
+                         <div class="step-content">
+                             <div class="step-text">上传音频文件，<strong>结果样式选择"含时间戳"</strong></div>
+                             <div class="step-hint">⚠️ 重要：必须选择含时间戳，否则无法转换</div>
+                         </div>
+                     </div>
+                     <div class="step-item">
+                         <span class="step-number">4</span>
+                         <div class="step-content">
+                             <div class="step-text">识别完成后，下载识别结果(.txt)，上传到本页面转换</div>
+                             <div class="step-hint">一键转换为SRT格式，导入视频编辑器使用</div>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+         </div>
+
+         <div class="content-right">
+             <div class="demo-badge">开源工具</div>
+             <div class="demo-area">
+                 <div class="upload-area" id="uploadArea">
+                     <div class="upload-icon">📄</div>
+                     <div class="upload-text">拖拽或点击上传文件</div>
+                     <div class="upload-hint">支持 .txt 格式文件</div>
+                     <input type="file" class="file-input" id="fileInput" accept=".txt">
+                 </div>
+
+                 <div class="file-info" id="fileInfo">
+                     <h4>📋 文件信息</h4>
+                     <p id="fileName"></p>
+                     <p id="fileSize"></p>
+                 </div>
+
+                 <div class="progress-bar" id="progressBar">
+                     <div class="progress-fill" id="progressFill"></div>
+                 </div>
+
+                 <div class="result-area" id="resultArea">
+                     <div class="result-header">转换结果</div>
+                     <div class="result-content" id="resultContent"></div>
+                     <button class="btn-primary" id="downloadBtn">
+                         <span>⬇️</span>
+                         下载SRT文件
+                     </button>
+                 </div>
+                          </div>
+         </div>
+     </div>
+
+     <footer class="footer">
+         <div class="footer-container">
+             <div class="footer-content">
+                 <div class="footer-section">
+                     <h4 class="footer-title">🌐 在线体验</h4>
+                     <a href="https://tencentcloud-asr-to-srt.longjin666.cn" target="_blank" class="footer-link">
+                        https://tencentcloud-asr-to-srt.longjin666.cn
+                     </a>
+                 </div>
+                 <div class="footer-section">
+                     <h4 class="footer-title">📂 开源项目</h4>
+                     <a href="https://github.com/fslongjin/tencentcloud-ASR-to-SRT" target="_blank" class="footer-link">
+                         GitHub仓库
+                         <br>
+                         <a href="https://github.com/fslongjin/tencentcloud-ASR-to-SRT" target="_blank" class="footer-link">
+                            https://github.com/fslongjin/tencentcloud-ASR-to-SRT
+                         </a>
+                     </a>
+                 </div>
+                 <div class="footer-section">
+                     <h4 class="footer-title">👨‍💻 开发者</h4>
+                     <div class="footer-text">B站UP主：
+                        <a href="https://space.bilibili.com/151941220" target="_blank" class="footer-link">
+                            灯珑LoGin
+                        </a>
+                    </div>
+                 </div>
+             </div>
+             <div class="footer-divider"></div>
+             <div class="footer-bottom">
+                 <p class="footer-copy">基于腾讯云语音识别技术 · 开源免费使用</p>
+             </div>
+         </div>
+     </footer>
+
+     <script>
+         const uploadArea = document.getElementById('uploadArea');
+         const fileInput = document.getElementById('fileInput');
+         const fileInfo = document.getElementById('fileInfo');
+         const fileName = document.getElementById('fileName');
+         const fileSize = document.getElementById('fileSize');
+         const progressBar = document.getElementById('progressBar');
+         const progressFill = document.getElementById('progressFill');
+         const resultArea = document.getElementById('resultArea');
+         const resultContent = document.getElementById('resultContent');
+         const downloadBtn = document.getElementById('downloadBtn');
+         const startBtn = document.getElementById('startBtn');
+         const demoBtn = document.getElementById('demoBtn');
+
+         let convertedSrtContent = '';
+         let originalFileName = '';
+
+         // 开始转换按钮
+         startBtn.addEventListener('click', () => {
+             fileInput.click();
+         });
+
+         // 演示按钮
+         demoBtn.addEventListener('click', () => {
+             showDemo();
+         });
+
+         // 点击上传区域触发文件选择
+         uploadArea.addEventListener('click', () => {
+             fileInput.click();
+         });
+
+         // 拖拽功能
+         uploadArea.addEventListener('dragover', (e) => {
+             e.preventDefault();
+             uploadArea.classList.add('dragover');
+         });
+
+         uploadArea.addEventListener('dragleave', () => {
+             uploadArea.classList.remove('dragover');
+         });
+
+         uploadArea.addEventListener('drop', (e) => {
+             e.preventDefault();
+             uploadArea.classList.remove('dragover');
+             const files = e.dataTransfer.files;
+             if (files.length > 0) {
+                 handleFile(files[0]);
+             }
+         });
+
+         // 文件选择处理
+         fileInput.addEventListener('change', (e) => {
+             if (e.target.files.length > 0) {
+                 handleFile(e.target.files[0]);
+             }
+         });
+
+         // 显示演示
+         function showDemo() {
+             const demoContent = `file: demo.mp3
+***********************************result**************************************
+
+[0:0.920,0:4.380]  这是一段文本1
+[0:5.720,0:9.360]  这是一段文本2
+[0:9.360,0:13.920]  这是一段文本3
+
+************************************end****************************************`;
+             
+             // 设置演示文件名
+             originalFileName = 'demo';
+             fileName.textContent = `文件名：demo.txt`;
+             fileSize.textContent = `文件大小：0.2 KB`;
+             fileInfo.style.display = 'block';
+             
+             // 模拟转换过程
+             progressBar.style.display = 'block';
+             progressFill.style.width = '30%';
+             
+             setTimeout(() => {
+                 progressFill.style.width = '60%';
+                 setTimeout(() => {
+                     const srtContent = convertToSrt(demoContent);
+                     progressFill.style.width = '100%';
+                     
+                     setTimeout(() => {
+                         progressBar.style.display = 'none';
+                         displayResult(srtContent);
+                     }, 500);
+                 }, 500);
+             }, 500);
+         }
+
+                 // 处理文件
+         function handleFile(file) {
+             if (!file.name.toLowerCase().endsWith('.txt')) {
+                 alert('请选择.txt格式的文件！');
+                 return;
+             }
+
+             // 保存原始文件名（不含扩展名）
+             originalFileName = file.name.replace('.txt', '');
+
+             // 显示文件信息
+             fileName.textContent = `文件名：${file.name}`;
+             fileSize.textContent = `文件大小：${(file.size / 1024).toFixed(2)} KB`;
+             fileInfo.style.display = 'block';
+
+            // 显示进度条
+            progressBar.style.display = 'block';
+            progressFill.style.width = '30%';
+
+            // 读取文件
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                progressFill.style.width = '60%';
+                const content = e.target.result;
+                
+                // 转换为SRT格式
+                setTimeout(() => {
+                    const srtContent = convertToSrt(content);
+                    progressFill.style.width = '100%';
+                    
+                    // 显示结果
+                    setTimeout(() => {
+                        progressBar.style.display = 'none';
+                        displayResult(srtContent);
+                    }, 500);
+                }, 500);
+            };
+
+            reader.onerror = function() {
+                alert('文件读取失败，请重试！');
+                progressBar.style.display = 'none';
+            };
+
+            reader.readAsText(file, 'utf-8');
+        }
+
+        // 转换腾讯云格式到SRT格式
+        function convertToSrt(content) {
+            const lines = content.split('\n');
+            const subtitles = [];
+            let subtitleIndex = 1;
+
+            for (let line of lines) {
+                line = line.trim();
+                
+                // 匹配时间戳和文本的格式：[开始时间,结束时间]  文本内容
+                const match = line.match(/^\[(\d+):(\d+\.\d+),(\d+):(\d+\.\d+)\]\s+(.+)$/);
+                
+                if (match) {
+                    const startHour = parseInt(match[1]);
+                    const startTime = parseFloat(match[2]);
+                    const endHour = parseInt(match[3]);
+                    const endTime = parseFloat(match[4]);
+                    const text = match[5].trim();
+
+                    // 转换时间格式
+                    const startSrt = formatTimeForSrt(startHour, startTime);
+                    const endSrt = formatTimeForSrt(endHour, endTime);
+
+                    subtitles.push({
+                        index: subtitleIndex++,
+                        start: startSrt,
+                        end: endSrt,
+                        text: text
+                    });
+                }
+            }
+
+            // 生成SRT格式内容
+            let srtContent = '';
+            for (let subtitle of subtitles) {
+                srtContent += `${subtitle.index}\n`;
+                srtContent += `${subtitle.start} --> ${subtitle.end}\n`;
+                srtContent += `${subtitle.text}\n\n`;
+            }
+
+            return srtContent;
+        }
+
+        // 格式化时间为SRT格式
+        function formatTimeForSrt(hour, timeInSeconds) {
+            const totalSeconds = hour * 3600 + timeInSeconds;
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = Math.floor(totalSeconds % 60);
+            const milliseconds = Math.floor((totalSeconds % 1) * 1000);
+
+            return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')},${String(milliseconds).padStart(3, '0')}`;
+        }
+
+        // 显示转换结果
+        function displayResult(srtContent) {
+            convertedSrtContent = srtContent;
+            resultContent.textContent = srtContent;
+            resultArea.style.display = 'block';
+            
+            // 滚动到结果区域
+            resultArea.scrollIntoView({ behavior: 'smooth' });
+        }
+
+                 // 下载SRT文件
+         downloadBtn.addEventListener('click', () => {
+             if (!convertedSrtContent) {
+                 alert('没有可下载的内容！');
+                 return;
+             }
+
+             // 使用原始文件名，如果没有则使用默认名称
+             const downloadFileName = originalFileName ? `${originalFileName}.srt` : 'subtitle.srt';
+
+             const blob = new Blob([convertedSrtContent], { type: 'text/plain;charset=utf-8' });
+             const url = URL.createObjectURL(blob);
+             const a = document.createElement('a');
+             a.href = url;
+             a.download = downloadFileName;
+             document.body.appendChild(a);
+             a.click();
+             document.body.removeChild(a);
+             URL.revokeObjectURL(url);
+         });
+    </script>
+</body>
+</html> 
